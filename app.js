@@ -12,14 +12,13 @@ const passport = require('passport');
 const response = require('./helpers/response');
 const configure = require('./config/passport');
 const auth = require('./routes/auth');
-const task = require('./routes/task');
 
 const app = express();
 
-mongoose.connect('mongodb://localhost/app-todo-db');
+mongoose.connect('mongodb://localhost/auction-platform-db');
 
 app.use(session({
-  secret: 'todo-app',
+  secret: 'auction-platform',
   resave: true,
   saveUninitialized: true,
   store: new MongoStore({
@@ -42,7 +41,6 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 
 app.use('/auth', auth);
-app.use('/task', task);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

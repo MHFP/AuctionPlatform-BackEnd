@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const AuctionSchema = new Schema({
+const auctionSchema = new Schema({
   ownerId: String,
   name: {
     type: String,
@@ -27,7 +27,7 @@ const AuctionSchema = new Schema({
   }
 });
 
-const Auction = mongoose.model('Auction', AuctionSchema);
+const Auction = mongoose.model('Auction', auctionSchema);
 
 module.exports = {
   Auction

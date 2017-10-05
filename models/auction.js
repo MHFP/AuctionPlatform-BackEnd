@@ -13,7 +13,6 @@ const auctionSchema = new Schema({
   },
   publishedDate: {
     type: Date,
-    required: [true, 'Date is required'],
   expirationDate: {
     type: Date,
     required: [true, 'Date is required']

@@ -15,15 +15,19 @@ router.get('/', (req, res, next) => {
   });
 });
 
-// router.get('/', (req, res, next) => {
-//
-//   Task.find({}, (err, tasks) => {
-//     if (err) {
-//       return next(res);
-//     }
-//     let data = tasks.map((task) => new Task(task));
-//     return response.data(req, res, data);
-//   });
-// });
+router.post('/', (req, res, next) => {
+  const newAuction = new Auction({
+    name: req.body.name,
+    quantity: req.body.quantity,
+    expirationDate: req.body.expirationDate
+  });
+
+  newAuction.save( (err) => {
+    if (err) { return res.status(500).json(err); }
+
+    return res.status(200).json(newAuction);
+  });
+});
+
 
 module.exports = router;

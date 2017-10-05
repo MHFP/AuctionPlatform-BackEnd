@@ -11,7 +11,10 @@ const auctionSchema = new Schema({
     type: Number,
     required: [true, 'Quantity of items is required']
   },
-  date: {
+  publishedDate: {
+    type: Date,
+    required: [true, 'Date is required'],
+  expirationDate: {
     type: Date,
     required: [true, 'Date is required']
   },
@@ -25,7 +28,7 @@ const auctionSchema = new Schema({
     winnerId: String,
     price: Number
   }
-});
+}});
 
 const Auction = mongoose.model('Auction', auctionSchema);
 

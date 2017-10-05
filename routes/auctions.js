@@ -15,6 +15,18 @@ router.get('/', (req, res, next) => {
   });
 });
 
+router.get('/:id', (req, res, next) => {
+  Auction.findById(req.params.id, (err, auction) => {
+    if (err){
+      return res.status(500).json(err);
+    }
+    if (!auction){
+      return res.status(404).json(new Error("404"));
+    }
+    return res.json(auction);
+  });
+});
+
 router.post('/', (req, res, next) => {
   const newAuction = new Auction({
     name: req.body.name,

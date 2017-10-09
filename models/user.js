@@ -1,6 +1,9 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const bcrypt = require('bcrypt');
+const Auction   = require('./auction').Auction;
+const Bid   = require('./bid').Bid;
+
 
 const UserSchema = new Schema({
   username: {
@@ -14,7 +17,13 @@ const UserSchema = new Schema({
   password: {
     type: String,
     required: [true, 'Password is required']
-  }
+  },
+  bids: [{
+    type: mongoose.Schema.Types.ObjectId, ref: 'Bid'
+  }],
+  auctions: [{
+    type: mongoose.Schema.Types.ObjectId, ref: 'Auction'
+  }]
 });
 
 UserSchema.methods.generateHash = function(password) {

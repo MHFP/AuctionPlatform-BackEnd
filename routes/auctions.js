@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
+const updateAuction = require('../helpers/updateAuction');
 const response = require('../helpers/response');
 const Auction = require('../models/auction').Auction;
 const Bid = require('../models/bid').Bid;
@@ -16,7 +17,21 @@ router.get('/', (req, res, next) => {
         return next(res);
       }
       let auctionData = auctions.map((auction) => new Auction(auction));
-      return response.data(req, res, auctionData);
+
+      let update = auctionData.map(function(auction){
+        let expirationDate = auction.expirationDate;
+        let currentDate = new Date(expirationDate);
+        console.log("this is current:" + currentDate);
+        console.log("this is expiration:" + expirationDate);
+
+        if(currentDate >= expirationDate){
+          auction.status = "closed";
+          return auction;
+        } else{
+          return auction;
+        }
+      });
+      return response.data(req, res, update);
     });
 });
 

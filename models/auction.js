@@ -33,12 +33,6 @@ const auctionSchema = new Schema({
 
 
 
-auctionSchema.methods.asData = function() {
-  return {
-    id: this._id,
-  };
-};
-
 
 const Auction = mongoose.model('Auction', auctionSchema);
 

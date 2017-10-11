@@ -12,26 +12,41 @@ router.get('/', (req, res, next) => {
   Auction
     .find({})
     .populate('bids', 'date')
+    .populate('owner', 'username, email')
     .exec( (err, auctions) => {
       if (err) {
-        return next(res);
+        return next(err);
       }
       let auctionData = auctions.map((auction) => new Auction(auction));
+      return response.data(req, res, auctionData);
+    });
+});
 
-      let update = auctionData.map(function(auction){
-        let expirationDate = auction.expirationDate;
-        let currentDate = new Date(expirationDate);
-        console.log("this is current:" + currentDate);
-        console.log("this is expiration:" + expirationDate);
+router.get('/by-user/:userId', (req, res, next) => {
+  Auction
+    .find({owner: req.params.userId})
+    .populate('bids', 'date')
+    .populate('owner', 'username, email')
+    .exec( (err, auctions) => {
+      if (err) {
+        return next(err);
+      }
+      let auctionData = auctions.map((auction) => new Auction(auction));
+      return response.data(req, res, auctionData);
+    });
+});
 
-        if(currentDate >= expirationDate){
-          auction.status = "closed";
-          return auction;
-        } else{
-          return auction;
-        }
-      });
-      return response.data(req, res, update);
+router.get('/mine', (req, res, next) => {
+  Auction
+    .find({owner: '59d36f3443f0a58518804707', status: 'open'}) // req.user._id
+    .populate('bids', 'date')
+    .populate('owner', 'username, email')
+    .exec( (err, auctions) => {
+      if (err) {
+        return next(err);
+      }
+      let auctionData = auctions.map((auction) => new Auction(auction));
+      return response.data(req, res, auctionData);
     });
 });
 
@@ -54,7 +69,8 @@ router.post('/', (req, res, next) => {
     name: req.body.name,
     quantity: req.body.quantity,
     expirationDate: req.body.expirationDate,
-    status: req.body.status
+    status: req.body.status,
+    owner: '59d36f3443f0a58518804707' // req.user._id
   });
 
   newAuction.save( (err) => {
